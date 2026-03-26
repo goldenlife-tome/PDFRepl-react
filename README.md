@@ -1,46 +1,530 @@
-# react-pdf-repl
+# React PDF REPL
 
-REPL for `@react-pdf/renderer` with interactive debugger
+A modern, interactive web-based REPL (Read-Eval-Print Loop) for creating and debugging PDF files using React. This project allows developers to write React components that render to PDF format, with live preview, debugging tools, and a comprehensive development environment.
 
-## Examples
+**Live Demo:** https://react-pdf-repl.vercel.app/
 
-| [![][context_example_image]][context_example] react context usage| [![][emoji_example_image]][emoji_example] emojis |
-|:---:|:---:|
-| [![][presence_example_image]][presence_example] minPresenceAhead| [![][dimensions_example_image]][dimensions_example] margin padding and border |
-| [![][watermark_example_image]][watermark_example] watermark| [![][tailwind_example_image]][tailwind_example] react-pdf and tailwind |
-| [![][image_fallback_example_image]][image_fallback_example] image fallback| [![][exif_bug_example_image]][exif_bug_example] exif bug |
+## Overview
 
-[Create new doc](https://react-pdf-repl.vercel.app/new)
+React PDF REPL is a full-featured development environment for building PDF documents with React and [@react-pdf/renderer](https://react-pdf.org/). It provides:
 
-[context_example]: https://react-pdf-repl.vercel.app/?gz_code=eJzlVWtP2zAU_d5fcRdtUiqVpOU11LXVgME2adMQMKSBkDCJ01pK4sh2oSzKf9-9zqNpeWj7tmkVJY7vw-eee3wrkkwqA3kH4Mw8xPxsxrnp4dsHGcwTntr1CZtyel4Ifk_Pc76w-8eS7AVESibgvFecBWYjCyNf8TTkiivnXUdUB0CAZsMPMYSiYa6X68OZiEOM6UEQy5QfxZxOhjqxzYupOnSep_hUaMOVS5gjloj4YQjOt4yncMZS7RAwrQLcmxmT6aHvRximvak2zIjAC2Tia1-iv0Z3_27w1k94sveDfdSDzd2v4jI72N_4fnxx2eeeMRHmK7p4diBTbUATRxrGLbK8sjAL51aGCIZWABkLQ5FOhzDoE6RiJc85u43r-jHbCjduvu6IHi4S2LCkxU8EUXRhPAEXc4_a6bwTJe8E0g93LJ7zcZ7X_sXEAhtRG8tKyHgrFTofSGNkgmB71capmM4MvlNYXh9djHwKpjwj_8lDJ50l9lN5v4q8gkz8lB4NNPRbCsJtZ8Z0ACIC95V17YKZKcx7pJRUroMcVykyJTMwsiIMm5yhklLj2HjFzVyllqtH9UcxX3wQigdGyBRVg9mdhiuAvBanl7DMXfagXPZAoNIXVFblDysarr3KQocl1isbc41sVDHdogTWkIugi4bGQx7HTymgLQAKtDnqsqrMjQidHdShvRv0oZqHcNOHPrzOKVfx5qa2le0_lxmJYWXvC49Ms1kQ5kpQNA9WRGI3OsuKSBN8YQdByCM2jw24S_D1qGn1BHt__PhqLyVME8mSMHb2tx2QSmA8ow6OnZiloQ5Yxp06YXlrPbqdTV_XVMBiMU0_G55oPJHo2cBxoUxbCfU9K5s4zq92e4B_m3s92OrT97rlis4o__Y77lAnJ4ORb59PmDafN209b9p-3rTz2DTy13D9nzg_4T8J91LFYfkrw8BQc_8R-C_Q_OeV_VXwX6D59ytbg1_9VjVXv5mztKZRUs6qeg6V8-oX3nOE4Q&modules=true
+- **Live Code Editor** - Monaco Editor for writing React components
+- **Real-time PDF Preview** - Instantly see your changes rendered as PDFs
+- **PDF Debugging Tools** - Inspect PDF structure, elements, and box sizing
+- **Code Sharing** - Compress and share code via URL parameters
+- **Module Support** - Write modular code with ES6 imports
+- **Error Handling** - Clear error messages with recovery options
+- **Responsive UI** - Resizable panels for optimal workflow
 
-[context_example_image]: https://react-pdf-repl.vercel.app/api/og?gz_code=eJzlVWtP2zAU_d5fcRdtUiqVpOU11LXVgME2adMQMKSBkDCJ01pK4sh2oSzKf9-9zqNpeWj7tmkVJY7vw-eee3wrkkwqA3kH4Mw8xPxsxrnp4dsHGcwTntr1CZtyel4Ifk_Pc76w-8eS7AVESibgvFecBWYjCyNf8TTkiivnXUdUB0CAZsMPMYSiYa6X68OZiEOM6UEQy5QfxZxOhjqxzYupOnSep_hUaMOVS5gjloj4YQjOt4yncMZS7RAwrQLcmxmT6aHvRximvak2zIjAC2Tia1-iv0Z3_27w1k94sveDfdSDzd2v4jI72N_4fnxx2eeeMRHmK7p4diBTbUATRxrGLbK8sjAL51aGCIZWABkLQ5FOhzDoE6RiJc85u43r-jHbCjduvu6IHi4S2LCkxU8EUXRhPAEXc4_a6bwTJe8E0g93LJ7zcZ7X_sXEAhtRG8tKyHgrFTofSGNkgmB71capmM4MvlNYXh9djHwKpjwj_8lDJ50l9lN5v4q8gkz8lB4NNPRbCsJtZ8Z0ACIC95V17YKZKcx7pJRUroMcVykyJTMwsiIMm5yhklLj2HjFzVyllqtH9UcxX3wQigdGyBRVg9mdhiuAvBanl7DMXfagXPZAoNIXVFblDysarr3KQocl1isbc41sVDHdogTWkIugi4bGQx7HTymgLQAKtDnqsqrMjQidHdShvRv0oZqHcNOHPrzOKVfx5qa2le0_lxmJYWXvC49Ms1kQ5kpQNA9WRGI3OsuKSBN8YQdByCM2jw24S_D1qGn1BHt__PhqLyVME8mSMHb2tx2QSmA8ow6OnZiloQ5Yxp06YXlrPbqdTV_XVMBiMU0_G55oPJHo2cBxoUxbCfU9K5s4zq92e4B_m3s92OrT97rlis4o__Y77lAnJ4ORb59PmDafN209b9p-3rTz2DTy13D9nzg_4T8J91LFYfkrw8BQc_8R-C_Q_OeV_VXwX6D59ytbg1_9VjVXv5mztKZRUs6qeg6V8-oX3nOE4Q&modules=true
+## Features
 
+### Core Features
+- 🎯 **Instant Feedback** - See PDF changes in real-time as you edit code
+- 🔍 **Interactive Debugger** - Inspect PDF element tree with hover previews
+- 📐 **Box Model Debugging** - Visualize element borders, margins, and padding
+- 🎨 **Syntax Highlighting** - Full Monaco Editor support with IntelliSense
+- 📦 **Module System** - Use ES6 modules with automatic code transformation
+- 🔗 **URL Code Sharing** - Share code via compressed URL parameters
+- 🐳 **Sandpack Integration** - Alternative sandbox environment for examples
 
-[emoji_example]: https://react-pdf-repl.vercel.app/?gz_code=eJy1Uk1Lw0AQvfdXDEEhhTTbUuwhpkXxAwQPQsWrxuwkWUl2w-7GVkP-hHjqpSdB_50_wV2baqGCXrwMs2_m7b43s6wohdRQw6ng2oNLnJt4EaXowRXDmQfHIq4K5BoaSKQowDmQGMW6V9KESOQUJUpnv9OxfF9iypRGeVKIOzYVlYzRrTsAtxXLTWcAbiwodmE8MSDATaZ1qQJCYsr9O0UxZ_fS56hJmhGVVZTxlCR5ZZ6vWA_tpb2KM3sHiZRCrchObU--FudihvIoUuh2m-sh9Uue3nidpmuk4fzTI8UkqnINrn0fXKMgXJtbyQmtb1DsEcfO4chZgQa2g2hzAKUfchzX9RcAkBjrU8MKYDjyNvAMWZrpAJxBv7_rbFbKiFpvAQz2NuEoZyk_01goQ4qNLjPa73rTtOnkCwrtvibvy8UrvC-f3rbD4jUknz1blJ-62_A75fllHf6T8mdhf7YfErvLdtvErtvmIfn-B-a_fACFSBSn&modules=true
+### Advanced Capabilities
+- **Secure Code Execution** - Uses SES (Secure EcmaScript) for sandboxed evaluation
+- **Web Worker Support** - Non-blocking code execution with worker threads
+- **PDF.js Integration** - Full PDF viewer with page navigation
+- **Layout Tracking** - Capture and inspect PDF layout data
+- **Canvas Pooling** - Optimized rendering with canvas reuse
+- **Responsive Panels** - Resizable interface with react-resizable-panels
 
-[emoji_example_image]: https://react-pdf-repl.vercel.app/api/og?gz_code=eJy1Uk1Lw0AQvfdXDEEhhTTbUuwhpkXxAwQPQsWrxuwkWUl2w-7GVkP-hHjqpSdB_50_wV2baqGCXrwMs2_m7b43s6wohdRQw6ng2oNLnJt4EaXowRXDmQfHIq4K5BoaSKQowDmQGMW6V9KESOQUJUpnv9OxfF9iypRGeVKIOzYVlYzRrTsAtxXLTWcAbiwodmE8MSDATaZ1qQJCYsr9O0UxZ_fS56hJmhGVVZTxlCR5ZZ6vWA_tpb2KM3sHiZRCrchObU--FudihvIoUuh2m-sh9Uue3nidpmuk4fzTI8UkqnINrn0fXKMgXJtbyQmtb1DsEcfO4chZgQa2g2hzAKUfchzX9RcAkBjrU8MKYDjyNvAMWZrpAJxBv7_rbFbKiFpvAQz2NuEoZyk_01goQ4qNLjPa73rTtOnkCwrtvibvy8UrvC-f3rbD4jUknz1blJ-62_A75fllHf6T8mdhf7YfErvLdtvErtvmIfn-B-a_fACFSBSn&modules=true
+## Project Structure
 
-[presence_example]: https://react-pdf-repl.vercel.app/?gz_code=eJy9U01v00AQvedXjNxLKrl2PmiJQhzRFgVxQFRqqUQRh8UeJ4u8Xmd33A8s_3dmYydOCIgb8sHrmeeZeW_eSlVoQ1DBHT6TDzdiiT7cS3zy4Z2OS4U5Rxc6J6ghNVqB99agiOmsSNLQYJ6gQeO96fUcJjC4lJbQ9KseQCqUzF6m4H0qMIdbkVvP57A1McdWRIWdhmHKv9lgaUmQjINYq9CGmvGW4eHj8HWoUE2-iPd2OLr4KB-Kq8uzz4v7hwEGRCnXq0-5d6xzS3AtTAIR9CtYoeC5fOA4oRv9FKI59Ln5zFEDSy8ZRlUFTzKh1RRGg4EPhUgSmS-ncA51PWcso50omxOAkvmNQYt5jJeuflSNz-s2t63XfjJ1bnwrfyKXfuXvom2HK02kFffpMsR97gxTTrXhjFcWBZpYWPQ6TKwzbTh3MplMduG6GWHeflYN8yY4C934e0w63t18wwu_q4wj93iOf9VqV3dVZqETb95ziuPzxjYJpqLMCPqdwFvXHDZbHHuhU9mZroMf7AEsTxlVX8duQ7ymb_WW6maTO3GONgDwo7Qk05frhge3jvnFXvX3MCKTy_wDobJ_ytfb_c53oZkz2V6BRu_IW2GWaTgZenu5VsHIu8cMHnVWFiTs9sA9QdC6RAezuC4FlQbQGG0g19-lDfgWkkBAbSFxC-IfUJhSOSdKJQK-se7uMoJgXUoLuVzJDJTOkIkLG3SzhPPeIYPf5-ad76b9Z9njcn8XZPwfBTng207XWrY5O581Rt6adGPmX0O6fjQ&modules=true
+```
+react-pdf-repl/
+├── app/                          # Next.js 13 App Router
+│   ├── page.js                  # Main REPL page
+│   ├── repl.js                  # REPL component (client-side)
+│   ├── layout.js                # Root layout
+│   ├── globals.css              # Global styles
+│   └── sandpack/                # Sandpack sandbox environment
+│       ├── page.js              # Sandpack page
+│       └── example/             # Example code files
+│
+├── components/                   # React components
+│   ├── repl-layout.js           # Main REPL layout structure
+│   ├── viewer.js                # PDF viewer component
+│   ├── debug-tree.js            # PDF element tree debugger
+│   ├── elements-tree.js         # Interactive element tree
+│   ├── box-sizing.js            # Box model indicator
+│   └── *.module.css             # Component styles
+│
+├── state/                        # Jotai state management
+│   ├── debugger.js              # Debugger state (layout, selection, hover)
+│   └── page.js                  # PDF page navigation state
+│
+├── hooks/                        # Custom React hooks
+│   └── index.js                 # createSingleton, useEventCallback, etc.
+│
+├── worker/                       # Web Worker files
+│   ├── index.js                 # Worker wrapper and lifecycle
+│   ├── executer.js              # Code execution engine
+│   ├── process-jsx.js           # JSX preprocessing (Acorn + Astring)
+│   ├── to-module.js             # ES6 module compilation
+│   └── better-static-module-record.mjs  # Compartment integration
+│
+├── code/                        # Default code examples
+│   ├── default-example.js       # Demo code snippets
+│   └── lz.js                    # LZ-string compression utilities
+│
+├── pages/
+│   └── api/
+│       └── og.js                # Open Graph image generation
+│
+├── patches/                     # Package patches
+│   └── pdfjs-dist+3.3.122.patch
+│
+├── public/                      # Static assets
+│
+├── package.json                 # Dependencies and scripts
+├── next.config.js               # Next.js configuration
+└── README.md                    # This file
+```
 
-[presence_example_image]: https://react-pdf-repl.vercel.app/api/og?gz_code=eJy9U01v00AQvedXjNxLKrl2PmiJQhzRFgVxQFRqqUQRh8UeJ4u8Xmd33A8s_3dmYydOCIgb8sHrmeeZeW_eSlVoQ1DBHT6TDzdiiT7cS3zy4Z2OS4U5Rxc6J6ghNVqB99agiOmsSNLQYJ6gQeO96fUcJjC4lJbQ9KseQCqUzF6m4H0qMIdbkVvP57A1McdWRIWdhmHKv9lgaUmQjINYq9CGmvGW4eHj8HWoUE2-iPd2OLr4KB-Kq8uzz4v7hwEGRCnXq0-5d6xzS3AtTAIR9CtYoeC5fOA4oRv9FKI59Ln5zFEDSy8ZRlUFTzKh1RRGg4EPhUgSmS-ncA51PWcso50omxOAkvmNQYt5jJeuflSNz-s2t63XfjJ1bnwrfyKXfuXvom2HK02kFffpMsR97gxTTrXhjFcWBZpYWPQ6TKwzbTh3MplMduG6GWHeflYN8yY4C934e0w63t18wwu_q4wj93iOf9VqV3dVZqETb95ziuPzxjYJpqLMCPqdwFvXHDZbHHuhU9mZroMf7AEsTxlVX8duQ7ymb_WW6maTO3GONgDwo7Qk05frhge3jvnFXvX3MCKTy_wDobJ_ytfb_c53oZkz2V6BRu_IW2GWaTgZenu5VsHIu8cMHnVWFiTs9sA9QdC6RAezuC4FlQbQGG0g19-lDfgWkkBAbSFxC-IfUJhSOSdKJQK-se7uMoJgXUoLuVzJDJTOkIkLG3SzhPPeIYPf5-ad76b9Z9njcn8XZPwfBTng207XWrY5O581Rt6adGPmX0O6fjQ&modules=true
+## Technology Stack
 
-[dimensions_example]: https://react-pdf-repl.vercel.app/?gz_code=eJyVVl1vmzAUfc-vuGKallQkQCjdlCXZ2lXdHjZtartWa9UHCoZYChgZZ0kX5b_vmo8AaSBBPIDtc--5Pj7XggYR4wLWcEtWQoVftk9UuKNkqcIlcxYBCXH2ioUCNuBxFoDymRPbEf3I9TROQpdwwpWPnY7EDDjxaSwI7647AJ4d0PnLCJSfEQnhxg5jRcXpmDs4NxMiikea5mFYPPBjYQvqDBwWaLHGEB8jXPtrvNcCEnz4Y3-NjeHZD_oQXZz3f1_dPehkIISH-TY95HZYGAvwibhgHAuCCXSfky8VKFa4wgm9B5Mpsp9zbr8MaJy8M1QPPkH6NbBFN4nAqfIcRo9ggQseDYm7ZbxgMnV3DZHtujT0VQhs7tNQhZw-pv8IbCQ3dJF9LJXFN4BLnhd-8hWLlzmZrNfJALapsmGWMBulab-wOeOo4RsylI9SXb1l0T11xWxUCLJVQ-9VsdfUn4latLGDvmBCsKAWPtyBfydefW5zC16mEKnUp8GjoitPUnsjX54RWWOxblTWNxt8adNO4YJrtkzPxJnRuYsO3ZV_Kzj4djQCQ1fBm5PVJeXEEZSFKCxnSyWdvecSoyzxpSDZNCFd56kl-ViTScsVfCN2ZsL9RchOK4qQDXCDe8NKzlQQuHbL0fse4wESL6KIcMeOScJeEI81mSVlJaukhdGc9mIuoFsw5R1cZbt63ZfbrY3lBZBoPVHOz5QiMLPlCMwtFtHpVqfZ4ljLxvkynkX-jSPZLRlyohi6ktKsHy08AUt_2shz3A8e6tAKb75tAZa5ARnMVgxJCAY2BY21kgC5VmlDHyFVCqwoZSKFua-uHFsVSsKNJnhJJ3OIqYcN2D0yGYfKQXnAgr5VaGSpcGod1Ci9JI7QKAUmpWDSQ6e3RQ8TYfDGygVqiFxrJyB7ENtItobLSBy-w47CzsSuIy5eUJzAibap4TLbFFaqy2y1I8NKI_HVGLffknRF3FaOlLavNFClCw54wigHV1rIrNtnYdgdZqva6QccbEkPG1aZPpmydmo4baqhj2h8-s1ppNOtzOm1nsXDSo9N8tXreZRncivvV_YIB-3UcMwdWme_Jl2O2U-WzbDKueqyNHm0TqR2Zq07sXaurb2rjjXtgWY_aNzUtYlxD90bJfO-ujfGmvxHmCa_PvkPRvIj8h_5n2bA&modules=true
+### Core Framework
+- **Next.js 13** - React framework with App Router
+- **React 18.2** - UI library
+- **React Server Components** - Server-side rendering
 
-[dimensions_example_image]: https://react-pdf-repl.vercel.app/api/og?gz_code=eJyVVl1vmzAUfc-vuGKallQkQCjdlCXZ2lXdHjZtartWa9UHCoZYChgZZ0kX5b_vmo8AaSBBPIDtc--5Pj7XggYR4wLWcEtWQoVftk9UuKNkqcIlcxYBCXH2ioUCNuBxFoDymRPbEf3I9TROQpdwwpWPnY7EDDjxaSwI7647AJ4d0PnLCJSfEQnhxg5jRcXpmDs4NxMiikea5mFYPPBjYQvqDBwWaLHGEB8jXPtrvNcCEnz4Y3-NjeHZD_oQXZz3f1_dPehkIISH-TY95HZYGAvwibhgHAuCCXSfky8VKFa4wgm9B5Mpsp9zbr8MaJy8M1QPPkH6NbBFN4nAqfIcRo9ggQseDYm7ZbxgMnV3DZHtujT0VQhs7tNQhZw-pv8IbCQ3dJF9LJXFN4BLnhd-8hWLlzmZrNfJALapsmGWMBulab-wOeOo4RsylI9SXb1l0T11xWxUCLJVQ-9VsdfUn4latLGDvmBCsKAWPtyBfydefW5zC16mEKnUp8GjoitPUnsjX54RWWOxblTWNxt8adNO4YJrtkzPxJnRuYsO3ZV_Kzj4djQCQ1fBm5PVJeXEEZSFKCxnSyWdvecSoyzxpSDZNCFd56kl-ViTScsVfCN2ZsL9RchOK4qQDXCDe8NKzlQQuHbL0fse4wESL6KIcMeOScJeEI81mSVlJaukhdGc9mIuoFsw5R1cZbt63ZfbrY3lBZBoPVHOz5QiMLPlCMwtFtHpVqfZ4ljLxvkynkX-jSPZLRlyohi6ktKsHy08AUt_2shz3A8e6tAKb75tAZa5ARnMVgxJCAY2BY21kgC5VmlDHyFVCqwoZSKFua-uHFsVSsKNJnhJJ3OIqYcN2D0yGYfKQXnAgr5VaGSpcGod1Ci9JI7QKAUmpWDSQ6e3RQ8TYfDGygVqiFxrJyB7ENtItobLSBy-w47CzsSuIy5eUJzAibap4TLbFFaqy2y1I8NKI_HVGLffknRF3FaOlLavNFClCw54wigHV1rIrNtnYdgdZqva6QccbEkPG1aZPpmydmo4baqhj2h8-s1ppNOtzOm1nsXDSo9N8tXreZRncivvV_YIB-3UcMwdWme_Jl2O2U-WzbDKueqyNHm0TqR2Zq07sXaurb2rjjXtgWY_aNzUtYlxD90bJfO-ujfGmvxHmCa_PvkPRvIj8h_5n2bA&modules=true
+### PDF & Document Processing
+- **@react-pdf/renderer** - React to PDF rendering
+- **pdfjs-dist** - PDF viewing and manipulation
+- **react-pdf-tailwind** - Tailwind CSS utilities for PDF
+- **Canvas API** - Low-level PDF rendering
+- **@napi-rs/canvas** - Node.js canvas support
 
-[watermark_example]: https://react-pdf-repl.vercel.app/?gz_code=eJytVluP4jYUfudXHKVbCdoJiZ0bzADqVtVc1KWtNFvU8tL1EkOiyU1JyMwU8d_72UC4zG6flmBsn_v5fHJMnBZ5WdOmQ_RRvtRXmB-blZr-EHWk5rvdZiXVPIvls5p_yRfrVGZa_kOcPan5Nlf7LS3LPCXjp1KKRW0W4dIqZRbKUpbGTaejhPqlXMVVLcuucrsUaZy8XpPxeyEzehRZZShrVbkALarrorq2rCXUqv6qqkUdL_qLPLUqK4d8BXGrYYGVynTwt7irGPen8bz4-b355-1sbst-XS9hb9uD70WeVTU9C3hORfmkEqQxXBlTn7hPjILISxxiDjkmcyL_ZO0lpkdsGJl-YoLATZcYv_fnUyeAamQ6icnxMBMqenDCLnKEPyR8bf24JkuYqR4emW5iMsh4JhMBBZrPIOFFgXIrfPL3NE5egwhMrzEd4ZG3I8MJaM485VjBFShq8EbZZoLp0HeSHEYc29NDB6KCbxAKTIM3n_qcgsa999gsiBibp-YQYfgNG0KERax1qqKxQXMFAxjHQGydzT7_GZ9PAxegJCo3gAW4FHamDyQdAi1yxYAGh4zJUxYbgBkgQfhHBtpYCxFG4-hoMSI3YftsPZ2bMqpk59OBOgqk4EGa7w7gxBEnu8EpQhH4JAoU4cL7DhCYaRgY3nzKbHZuBvFDbgeW2rvtfncu_oypQPf5cx0abxhi8k452ushnYMvZ3BRPYDgELsqngH5g68Uj5Jxv1A8_Kx4nG9RPHxg6_HF4mGe8wavr8DO_w_2APZw9qjAxMcvymdAzNaoQQFFiehnDGXJPWA-Txkso8IG8OfSkBTewdxo3_ICDesx_lfSmFw27HvOzZ4RovMoon3TkS-694VyKdZJTd0ejSfURUMYHdobVfVrIsebDakGdPu2U9F2O4ECVFSHpAoex8Z739gRQVYNc7-m1lpLIIpkvIpq2GS2_b1ufIdPIcIwzlbXxO1TskjiVfZQy7SC0gIxoq-e8leiOFfZbvfLSUsaqVY_uZdJktNzXiYhAZsatkaW5nSOkqq5U1TK5bjtxau4jtafdRMOY7nK03UprGO3B8CLdVXFQNvizPeMyUl0H-8fHgnfDw-__Xp0YikvLWSWwqyNQSNIy_hFhsfTKPIqruEBEIjPVZ6sa3k8Cq2FS4ye47COxgYfBn3fNfZQjzeH0sBNFSfJ2MjyTJ4FuXlfluK1r-6x7gkZDEpktqqja5ri7uiX-ToLu22lWbq2evQj3rrt1Zli958rinV5xSf0Xj8VRbf7JF_byjt-RndnWyKIjTf42V7Q6xKFuMzLdLz5VOa4IGUXF1RvR0_09p3Sox-Iudvi5YrebS5MaOPgq_gvWFDofTp3ObkQGemLNBxvzm7WA7rf2bZtUF6IRVwjAbvveFuy3ti4O8nDaEP_q8ttGxEYl_LfyKt1d066IPR625MiRUld1uhurV59tR5Zh74x6eD_xn9ik03x&modules=true
+### Code Editing & Execution
+- **@monaco-editor/react** - Visual Studio Code editor
+- **Acorn & Acorn-JSX** - JavaScript/JSX parsing
+- **Astring** - AST to code generation
+- **estree-util-build-jsx** - JSX transformation
+- **SES (Secure EcmaScript)** - Sandboxed code evaluation
+- **@endo/static-module-record** - Module record support
 
-[watermark_example_image]: https://react-pdf-repl.vercel.app/api/og?gz_code=eJytVluP4jYUfudXHKVbCdoJiZ0bzADqVtVc1KWtNFvU8tL1EkOiyU1JyMwU8d_72UC4zG6flmBsn_v5fHJMnBZ5WdOmQ_RRvtRXmB-blZr-EHWk5rvdZiXVPIvls5p_yRfrVGZa_kOcPan5Nlf7LS3LPCXjp1KKRW0W4dIqZRbKUpbGTaejhPqlXMVVLcuucrsUaZy8XpPxeyEzehRZZShrVbkALarrorq2rCXUqv6qqkUdL_qLPLUqK4d8BXGrYYGVynTwt7irGPen8bz4-b355-1sbst-XS9hb9uD70WeVTU9C3hORfmkEqQxXBlTn7hPjILISxxiDjkmcyL_ZO0lpkdsGJl-YoLATZcYv_fnUyeAamQ6icnxMBMqenDCLnKEPyR8bf24JkuYqR4emW5iMsh4JhMBBZrPIOFFgXIrfPL3NE5egwhMrzEd4ZG3I8MJaM485VjBFShq8EbZZoLp0HeSHEYc29NDB6KCbxAKTIM3n_qcgsa999gsiBibp-YQYfgNG0KERax1qqKxQXMFAxjHQGydzT7_GZ9PAxegJCo3gAW4FHamDyQdAi1yxYAGh4zJUxYbgBkgQfhHBtpYCxFG4-hoMSI3YftsPZ2bMqpk59OBOgqk4EGa7w7gxBEnu8EpQhH4JAoU4cL7DhCYaRgY3nzKbHZuBvFDbgeW2rvtfncu_oypQPf5cx0abxhi8k452ushnYMvZ3BRPYDgELsqngH5g68Uj5Jxv1A8_Kx4nG9RPHxg6_HF4mGe8wavr8DO_w_2APZw9qjAxMcvymdAzNaoQQFFiehnDGXJPWA-Txkso8IG8OfSkBTewdxo3_ICDesx_lfSmFw27HvOzZ4RovMoon3TkS-694VyKdZJTd0ejSfURUMYHdobVfVrIsebDakGdPu2U9F2O4ECVFSHpAoex8Z739gRQVYNc7-m1lpLIIpkvIpq2GS2_b1ufIdPIcIwzlbXxO1TskjiVfZQy7SC0gIxoq-e8leiOFfZbvfLSUsaqVY_uZdJktNzXiYhAZsatkaW5nSOkqq5U1TK5bjtxau4jtafdRMOY7nK03UprGO3B8CLdVXFQNvizPeMyUl0H-8fHgnfDw-__Xp0YikvLWSWwqyNQSNIy_hFhsfTKPIqruEBEIjPVZ6sa3k8Cq2FS4ye47COxgYfBn3fNfZQjzeH0sBNFSfJ2MjyTJ4FuXlfluK1r-6x7gkZDEpktqqja5ri7uiX-ToLu22lWbq2evQj3rrt1Zli958rinV5xSf0Xj8VRbf7JF_byjt-RndnWyKIjTf42V7Q6xKFuMzLdLz5VOa4IGUXF1RvR0_09p3Sox-Iudvi5YrebS5MaOPgq_gvWFDofTp3ObkQGemLNBxvzm7WA7rf2bZtUF6IRVwjAbvveFuy3ti4O8nDaEP_q8ttGxEYl_LfyKt1d066IPR625MiRUld1uhurV59tR5Zh74x6eD_xn9ik03x&modules=true
+### State Management & UI
+- **Jotai** - Primitive and flexible state management
+- **react-resizable-panels** - Resizable panel layout
+- **@react-hook/resize-observer** - Size observation
+- **react-suspense-fetch** - Data fetching with Suspense
 
-[tailwind_example]: https://react-pdf-repl.vercel.app/?gz_code=eJyNVNtuG0cMffdXEHqSkL1IRtAUrmTUReC8JE0ApwGaIChGs9w1k7llLlq5gv69nNXFllyg3QdpLuTh4SE5pJ31ETbw2sqk0cQCPogOC_iIa15_IuwLuLUmwhZabzWMfvUoZCxd09YeTYMe_eiXCzrgSL6O-LE_2h_NyyhI9WQaNr_IkJXHjkJEP95cALRCk3q4gtF7hwbuhAmjgo-Dl3x2H6MLV3XdsluouhBFJFlJq-tQW7YPbF6vZq9qjfrnP8WbMLv86R19dr_dlH_cfvo8xSrGlvG2E44trQkRYg-LI9uBQbxHjVeQlwCcPmd32AFIq6wPj3s-SSFazeSk9aZVtke_VAkH1vnb7hbD33YfGteDTA22IqkIbTIykjVw49x4MmB7jMkbGA--80NVIMQHhYvNBrICt8-lgu32eh93ngsIgf7Gxejm5ejgGvvxyJUvoVW4Hn5Kb_vdovfCQSf4djQ5wgBsvlRVdeO9eBjPLidfKy3cePxXATSBxfWe4T5k7pMne4Dv-LDY0Pbk7AmRIewMNJmyL79cTqcufoUDu5K1hmVXZjXL2XTKpE5wMt3FphUq4NOL6xOjeW7gpyEj78vLtRoULJdWNTAc7cp4kvjuu8NdbTYEL2B2SmFeZ_j_EzH8G_Rb61EDuZA0NLmxuFwRhEYeudydHDm3AYiGHAVJpgNUFCv4PSklzsACaocesG1JUvZStERvgQwowYGQ_e6wARIyKQoFaNEZASExsKN4huaUkOhFZB5a28YW4IlNgYGZCkQykprEHamoS0oUICRgosC28C1L-ZwdULMD2fPXR4cVhkjLpFgGhRxKW8UMmeCaNMcMwhGaM0CVZOQ7MhW_TiuR7bRQGJJoBKyScokfBwSeSeGxgncicWxILK_kWeKH4gyvZWXDIxYa0sATyJnxhHqSyGcJWNDACAUsWVzTMOEV3hMLel6NbFjBBy8w5Lnd1dh6SUN2OV-EzosVMVuG5_2PhCC48A1nu0zhDG9FUSCwH4Pei4BKMUmFgwYmq7nvmB-Ja8ZENXGuBbe2ds-wXFIrYlnAsDlW_9HR8zpP9ePJ5DiG8zo_MbubeX14o_Ke37jtxT9q3-Z8&modules=true
+### Utilities
+- **lz-string** - Compression for URL code sharing
+- **@vercel/analytics** - Analytics integration
+- **next-axiom** - Observability and logging
+- **patch-package** - Patch management
 
-[tailwind_example_image]: https://react-pdf-repl.vercel.app/api/og?gz_code=eJyNVNtuG0cMffdXEHqSkL1IRtAUrmTUReC8JE0ApwGaIChGs9w1k7llLlq5gv69nNXFllyg3QdpLuTh4SE5pJ31ETbw2sqk0cQCPogOC_iIa15_IuwLuLUmwhZabzWMfvUoZCxd09YeTYMe_eiXCzrgSL6O-LE_2h_NyyhI9WQaNr_IkJXHjkJEP95cALRCk3q4gtF7hwbuhAmjgo-Dl3x2H6MLV3XdsluouhBFJFlJq-tQW7YPbF6vZq9qjfrnP8WbMLv86R19dr_dlH_cfvo8xSrGlvG2E44trQkRYg-LI9uBQbxHjVeQlwCcPmd32AFIq6wPj3s-SSFazeSk9aZVtke_VAkH1vnb7hbD33YfGteDTA22IqkIbTIykjVw49x4MmB7jMkbGA--80NVIMQHhYvNBrICt8-lgu32eh93ngsIgf7Gxejm5ejgGvvxyJUvoVW4Hn5Kb_vdovfCQSf4djQ5wgBsvlRVdeO9eBjPLidfKy3cePxXATSBxfWe4T5k7pMne4Dv-LDY0Pbk7AmRIewMNJmyL79cTqcufoUDu5K1hmVXZjXL2XTKpE5wMt3FphUq4NOL6xOjeW7gpyEj78vLtRoULJdWNTAc7cp4kvjuu8NdbTYEL2B2SmFeZ_j_EzH8G_Rb61EDuZA0NLmxuFwRhEYeudydHDm3AYiGHAVJpgNUFCv4PSklzsACaocesG1JUvZStERvgQwowYGQ_e6wARIyKQoFaNEZASExsKN4huaUkOhFZB5a28YW4IlNgYGZCkQykprEHamoS0oUICRgosC28C1L-ZwdULMD2fPXR4cVhkjLpFgGhRxKW8UMmeCaNMcMwhGaM0CVZOQ7MhW_TiuR7bRQGJJoBKyScokfBwSeSeGxgncicWxILK_kWeKH4gyvZWXDIxYa0sATyJnxhHqSyGcJWNDACAUsWVzTMOEV3hMLel6NbFjBBy8w5Lnd1dh6SUN2OV-EzosVMVuG5_2PhCC48A1nu0zhDG9FUSCwH4Pei4BKMUmFgwYmq7nvmB-Ja8ZENXGuBbe2ds-wXFIrYlnAsDlW_9HR8zpP9ePJ5DiG8zo_MbubeX14o_Ke37jtxT9q3-Z8&modules=true
+## Getting Started
 
-[image_fallback_example]: https://react-pdf-repl.vercel.app/?gz_code=eJzFVF1v0zAUfe-vsPrUSU3cDhisrBVjrF0RaNM6htjL5CROYohjy75Zu1X571w76ceYeES8xLnX9-Pcc08ipFYGyLpDyFSV0MdzAY8FX-Sce-uTiivJm5srlnF33gq-dOdcto4bvsKAmqRGSdL9YDiLIdBJSg0vE2646b7vdFz90PBMWOCm5zqmTIricUS6l5qXZMFK23XVrInRlwNoO6I0xTQbZhYYiDiMlaSWKoy3GE4fhm-p5PLdDzazw8Ojr-JOfzwNvk1v7wY8BEixXn2AvWNVWiDWTWbJeG_EMEawwD2cSCUIxr0RolmSiDIbkcNB3zsypkdk6I263_HgiyJi8S9PwjZNWQFClYifRVYVFfBukw8K89taBU9haxiR5TsrUgBKbs2nOfK3GpFg2Dbem8Y3_i4gn7ZIcDA_B_LX3wO4MDHebPkUoZBZZTyT8Hqmj09vwp868zCXIoHcveTcoXLtyHhCeug5cUtvGByv121kG0fqeuLhnnhMDsB4jY-a0Enn2UWT3uwhfMZg3WTtgfbZmEpd50nHDc5XXq0JT1lVAOnt0G1kukPodDN9KbAd1quXiJwC2msMcKqeVKWttOvKE3JxPj8jwk_S2wAlwhKbq2V5cEJ9wib7xXrai5bl8fpwMKi3vobIP5yOkd13IBAhk9rh9F9B8049Hor5cesahs7otlU2G9jM8_nqfPaPke4r7Dor-MPFNPIS-wuks8vrBapVFP-B1VWQpEHEbBp4fkEZrB9I5v5RCQMWaKOS0L4KeRXEqC_DimAYMsmeVMmWzSY8JktnRi0hx_8UruPLNY2YKfjjfRTF-f2b41CX-_P7WahTYCPxjXy9zH8DOrGvNw&modules=true
+### Prerequisites
+- Node.js 16+ or compatible environment
+- npm or yarn package manager
 
-[image_fallback_example_image]: https://react-pdf-repl.vercel.app/api/og?gz_code=eJzFVF1v0zAUfe-vsPrUSU3cDhisrBVjrF0RaNM6htjL5CROYohjy75Zu1X571w76ceYeES8xLnX9-Pcc08ipFYGyLpDyFSV0MdzAY8FX-Sce-uTiivJm5srlnF33gq-dOdcto4bvsKAmqRGSdL9YDiLIdBJSg0vE2646b7vdFz90PBMWOCm5zqmTIricUS6l5qXZMFK23XVrInRlwNoO6I0xTQbZhYYiDiMlaSWKoy3GE4fhm-p5PLdDzazw8Ojr-JOfzwNvk1v7wY8BEixXn2AvWNVWiDWTWbJeG_EMEawwD2cSCUIxr0RolmSiDIbkcNB3zsypkdk6I263_HgiyJi8S9PwjZNWQFClYifRVYVFfBukw8K89taBU9haxiR5TsrUgBKbs2nOfK3GpFg2Dbem8Y3_i4gn7ZIcDA_B_LX3wO4MDHebPkUoZBZZTyT8Hqmj09vwp868zCXIoHcveTcoXLtyHhCeug5cUtvGByv121kG0fqeuLhnnhMDsB4jY-a0Enn2UWT3uwhfMZg3WTtgfbZmEpd50nHDc5XXq0JT1lVAOnt0G1kukPodDN9KbAd1quXiJwC2msMcKqeVKWttOvKE3JxPj8jwk_S2wAlwhKbq2V5cEJ9wib7xXrai5bl8fpwMKi3vobIP5yOkd13IBAhk9rh9F9B8049Hor5cesahs7otlU2G9jM8_nqfPaPke4r7Dor-MPFNPIS-wuks8vrBapVFP-B1VWQpEHEbBp4fkEZrB9I5v5RCQMWaKOS0L4KeRXEqC_DimAYMsmeVMmWzSY8JktnRi0hx_8UruPLNY2YKfjjfRTF-f2b41CX-_P7WahTYCPxjXy9zH8DOrGvNw&modules=true
+### Installation
 
-[exif_bug_example]: https://react-pdf-repl.vercel.app/?gz_code=eJzVlV1LwzAUhu_3Kw4BYYOu2dSpzHUoiiB4IQh6KVl62masTUlSujn63z3Z5j4E7-1VkvP5nDcXR-WlNg7W8KhllWPhAngVKQbwrrAO4DnfPN7caoFvGaKDBhKjc2B3BoV0_TJOuMEiRoOG3XY6UhfWgfXxFqKjxFBSgsPuugMw0_FqTD1LEceqSMcwHEATkEP5dt5Tq9hl3j4IQM_mKN2TcmNgVN4JVTAf3vSoHy43_DEmolo46PYgmkKXSk1-BprSg55-qi1XtN7ihR6jAau-MGL3I7YNpFA_-u4OPynrvQEgWeDyURmCUrogKKNrFvzyfxhRkqum48SXevNwcGzKUKWZH46mPTsJ3utzcZIwr6xTyeqBtKD5vCp0kPyHmKbZXad702TzlUdVTrXYKN8cu42MWOZcacecG1GHqXJZNassGrltHEqd09_LypCN41IlfW0UOYTXpY9LkZdUmufCEh1_EUVspSjxcxDOy5Tte_F_CTlsA-R5GyAv2gB52QbIURsgr9oAed0GyJs_ICfcb6jdXuN-sfn7hB82Hm3Gb-Mva9Q&modules=true
+```bash
+# Clone the repository
+git clone https://github.com/jeetiss/react-pdf-repl.git
+cd react-pdf-repl
 
-[exif_bug_example_image]: https://react-pdf-repl.vercel.app/api/og?gz_code=eJzVlV1LwzAUhu_3Kw4BYYOu2dSpzHUoiiB4IQh6KVl62masTUlSujn63z3Z5j4E7-1VkvP5nDcXR-WlNg7W8KhllWPhAngVKQbwrrAO4DnfPN7caoFvGaKDBhKjc2B3BoV0_TJOuMEiRoOG3XY6UhfWgfXxFqKjxFBSgsPuugMw0_FqTD1LEceqSMcwHEATkEP5dt5Tq9hl3j4IQM_mKN2TcmNgVN4JVTAf3vSoHy43_DEmolo46PYgmkKXSk1-BprSg55-qi1XtN7ihR6jAau-MGL3I7YNpFA_-u4OPynrvQEgWeDyURmCUrogKKNrFvzyfxhRkqum48SXevNwcGzKUKWZH46mPTsJ3utzcZIwr6xTyeqBtKD5vCp0kPyHmKbZXad702TzlUdVTrXYKN8cu42MWOZcacecG1GHqXJZNassGrltHEqd09_LypCN41IlfW0UOYTXpY9LkZdUmufCEh1_EUVspSjxcxDOy5Tte_F_CTlsA-R5GyAv2gB52QbIURsgr9oAed0GyJs_ICfcb6jdXuN-sfn7hB82Hm3Gb-Mva9Q&modules=true
+# Install dependencies
+npm install
+
+# Apply patches
+npm run postinstall
+```
+
+### Development
+
+```bash
+# Start development server
+npm run dev
+
+# Open in browser
+# http://localhost:3000
+```
+
+The application will start with hot-reload enabled. Changes to code and components will instantly reflect in the browser.
+
+### Production Build
+
+```bash
+# Build for production
+npm run build
+
+# Start production server
+npm start
+
+# Run linting
+npm run lint
+```
+
+## Usage
+
+### Writing PDF Documents
+
+The REPL expects a **default export** of a React component that renders a PDF document using `@react-pdf/renderer`:
+
+```jsx
+import { Document, Page, Text } from '@react-pdf/renderer';
+
+export default () => (
+  <Document>
+    <Page>
+      <Text>Hello, World!</Text>
+    </Page>
+  </Document>
+);
+```
+
+### Creating Styled Documents
+
+Use `StyleSheet` for performance-optimized styles:
+
+```jsx
+import { StyleSheet, Document, Page, View, Text } from '@react-pdf/renderer';
+
+const styles = StyleSheet.create({
+  page: {
+    padding: 40,
+  },
+  text: {
+    fontSize: 12,
+    color: '#333',
+  },
+});
+
+export default () => (
+  <Document>
+    <Page style={styles.page}>
+      <Text style={styles.text}>Styled PDF</Text>
+    </Page>
+  </Document>
+);
+```
+
+### Using Tailwind CSS
+
+For rapid styling with Tailwind utilities:
+
+```jsx
+import { Document, Page, Text } from '@react-pdf/renderer';
+import { tw } from 'react-pdf-tailwind';
+
+export default () => (
+  <Document>
+    <Page style={tw('p-8')}>
+      <Text style={tw('text-base')}>Tailwind Styled</Text>
+    </Page>
+  </Document>
+);
+```
+
+### Modular Code
+
+Write modular code with ES6 imports:
+
+```jsx
+// components/Header.jsx
+import { Text, View } from '@react-pdf/renderer';
+
+export const Header = () => (
+  <View>
+    <Text>Document Header</Text>
+  </View>
+);
+
+// Main component
+import { Document, Page } from '@react-pdf/renderer';
+import { Header } from './components/Header';
+
+export default () => (
+  <Document>
+    <Page>
+      <Header />
+    </Page>
+  </Document>
+);
+```
+
+### Debugging
+
+The REPL includes powerful debugging tools:
+
+1. **Element Tree** - Click to inspect PDF elements
+2. **Box Sizing** - Visualize spacing and dimensions
+3. **Page Navigation** - Navigate multi-page documents
+4. **Error Viewer** - Clear error messages with recovery options
+5. **Layout Inspector** - Examine computed layout data
+
+### URL Code Sharing
+
+Share code via compressed URL parameters:
+
+- Use the app interface to generate shareable links
+- Code is compressed with LZ-string compression
+- Query parameters: `cp_code` (custom code) or `gz_code` (compressed code)
+
+Example:
+```
+https://react-pdf-repl.vercel.app/?gz_code=eJxlkcFq...
+```
+
+## Architecture
+
+### Code Execution Pipeline
+
+```
+User Code (JSX)
+    ↓
+Parser (Acorn JSX)
+    ↓
+JSX Transform (estree-util-build-jsx)
+    ↓
+AST Generation (Astring)
+    ↓
+Module Compilation (StaticModuleRecord)
+    ↓
+Sandboxed Evaluation (SES Compartment)
+    ↓
+React Component Rendering
+    ↓
+@react-pdf/renderer
+    ↓
+PDF Blob
+```
+
+### Component Hierarchy
+
+```
+App (page.js)
+├── Repl (repl.js)
+│   ├── Editor (Monaco)
+│   ├── ErrorBoundary
+│   ├── PanelGroup (ResizablePanel)
+│   │   ├── EditorPanel
+│   │   ├── PreviewPanel
+│   │   │   ├── Viewer (PDF viewer)
+│   │   │   ├── DebugTree (Element tree)
+│   │   │   └── BoxSizing (Box model)
+│   │   └── DebugPanel
+│   └── Controls (navigation, buttons)
+```
+
+### State Management (Jotai)
+
+- **layoutAtom** - PDF element tree state
+- **selectedAtom** - Currently selected element
+- **hoverAtom** - Hovered element path
+- **pageAtom** - Current page number
+- **urlAtom** - Generated PDF URL
+
+### Web Worker
+
+The code execution runs in a Web Worker to prevent blocking the main thread:
+
+1. User code is sent to worker via `postMessage`
+2. Worker executes code in SES Compartment
+3. PDF is generated and converted to Blob
+4. URL and layout data returned to main thread
+
+## Key Concepts
+
+### SES (Secure EcmaScript)
+
+Code runs in isolated SES Compartments with restricted globals:
+- Only approved APIs are available
+- No access to DOM or window object
+- Safe cross-component code evaluation
+
+### Layout Capturing
+
+The REPL captures PDF layout information by wrapping the Document component with a LayoutProvider that intercepts render callbacks.
+
+### Module Records
+
+Code is compiled into ES6 module records using `StaticModuleRecord`, enabling:
+- Import/export support
+- Scoped variable isolation
+- Virtual module filesystem
+
+### Canvas Pooling
+
+To optimize rendering performance, PDF canvases are reused:
+- Rendered canvases are pooled after use
+- New renders reuse pooled canvases when possible
+- Reduces memory allocation overhead
+
+## Development Tips
+
+### Adding New Dependencies
+
+```bash
+npm install <package-name>
+npm run postinstall  # Apply patches
+```
+
+### Modifying Worker
+
+Changes to `/worker` files require page reload (not hot-reload):
+- Web Workers cannot be HMR'd directly
+- Restart dev server for changes to take effect
+
+### Debugging Worker Execution
+
+Use `console.log` inside worker code - messages appear in browser console.
+
+### Custom PDF Styling
+
+All `@react-pdf/renderer` styling is supported:
+- Flexbox layouts
+- Colors and backgrounds
+- Transform and opacity
+- Fonts and typography
+- Page breaks
+
+## Configuration
+
+### Next.js Configuration
+
+Key settings in `next.config.js`:
+- **App Router** - Enabled experiments.appDir
+- **Output Tracing** - Disabled for worker support
+- **Webpack Rules** - PDF worker asset handling
+- **Raw Asset Loading** - For Sandpack examples
+
+### Environment Variables
+
+Optional environment configuration:
+- No required environment variables for local development
+- Vercel Analytics integrated via `next-axiom`
+
+## Deployment
+
+### Vercel
+
+Optimized for Vercel deployment:
+
+```bash
+npm run build
+```
+
+The application includes:
+- Open Graph image generation
+- Request logging via next-axiom
+- Automatic redirects for legacy URLs
+
+### Docker / Self-Hosted
+
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY . .
+RUN npm install
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+## Troubleshooting
+
+### Error: "The default export is not a React PDF Component"
+
+Ensure your code exports a valid React component that renders to PDF:
+```jsx
+export default () => <Document>...</Document>;
+```
+
+### Code Won't Execute / Worker Timeout
+
+- Check browser console for syntax errors
+- Validate JSX syntax
+- Ensure no infinite loops
+- Worker has default 30s timeout
+
+### PDF Not Showing
+
+- Verify component renders a `<Document>` with `<Page>` children
+- Check for console errors
+- Ensure valid @react-pdf/renderer usage
+
+### Module Not Found
+
+- Check module names match import statements
+- Relative imports require `./` or `../` prefix
+- Only top-level modules can be imported
+
+## Performance Optimization
+
+### Best Practices
+
+1. **Use StyleSheet** - Improves rendering performance
+2. **Memoize Components** - Cache expensive computations
+3. **Lazy Load** - Dynamically import large modules
+4. **Optimize Images** - Use appropriately sized assets
+5. **Avoid Dynamic Styles** - Pre-compute styles outside render
+
+### Limits
+
+- Max uncompressed code: Limited by browser memory
+- Max PDF size: Depends on system resources
+- Worker timeout: ~30 seconds default
+- Page count: Tested up to 1000+ pages
+
+## Contributing
+
+Contributions are welcome! Areas for improvement:
+
+- Additional debugging features
+- Performance optimizations
+- More example templates
+- Enhanced error messages
+- Accessibility improvements
+
+## License
+
+ISC License - Copyright 2023 Dmitry Ivakhnenko
+
+See [LICENSE](LICENSE) file for details.
+
+## Resources
+
+### Official Documentation
+- [@react-pdf/renderer](https://react-pdf.org/)
+- [Next.js 13](https://nextjs.org/docs)
+- [React 18](https://react.dev/)
+- [Jotai](https://jotai.org/)
+- [Monaco Editor](https://microsoft.github.io/monaco-editor/)
+
+### Related Tools
+- [PDF.js](https://mozilla.github.io/pdf.js/)
+- [SES](https://github.com/endojs/endo)
+- [Sandpack](https://sandpack.codesandbox.io/)
+
+## Support
+
+- **GitHub Issues** - https://github.com/jeetiss/react-pdf-repl/issues
+- **Live Demo** - https://react-pdf-repl.vercel.app/
+- **Author** - Dmitry Ivakhnenko
+
+## Changelog
+
+### v0.1.0 (Current)
+- Initial release
+- Core REPL functionality
+- PDF debugging tools
+- URL code sharing
+- Sandpack integration
+- Module support
+
+---
+
+**Made with ❤️ for PDF enthusiasts and React developers**
